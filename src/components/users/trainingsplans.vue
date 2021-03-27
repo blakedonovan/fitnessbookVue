@@ -1,5 +1,7 @@
 <template>
+
   <div class="accordion" role="tablist">
+{{ id }}
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-1 variant="info">Pull Day</b-button>
@@ -50,6 +52,7 @@
           vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
           synth nesciunt you probably haven't heard of them accusamus labore VHS.
         `
+        ,id:1
       }
     }
   }

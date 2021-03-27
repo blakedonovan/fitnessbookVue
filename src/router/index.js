@@ -11,7 +11,14 @@ const routes = [
   {
     path: '/',
     name: 'Fitnessbook',
-    component: () => import('../views/FitnessBook.vue') 
+    component: () => import('../views/FitnessBook.vue'),
+    
+  
+  children:[
+    { path: '/fitnessbook/manageTrainingUnits',component: () => import('../components/fitnessbook/manageTrainingUnits.vue') }
+    
+
+  ]
     // landing page
   },
 
@@ -27,6 +34,18 @@ const routes = [
       { path: '/users/trainingsplans',component: () => import('../components/users/trainingsplans.vue') },
       { path: '/users/biometrics',component: () => import('../components/users/biometrics.vue') }
     ]
+  },
+  {
+  path: '/cookbook',
+  name:'Cookbook',
+  component: () => import('../views/cookbook.vue'),
+  
+  children:[
+    { path: '/cookbook/recipes',component: () => import('../components/cookbook/recipes.vue') }
+    ,
+    {path: '/cookbook/ingredients',component: () => import('../components/cookbook/ingredients.vue')}
+
+  ]
   }
 ]
 

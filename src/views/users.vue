@@ -1,6 +1,18 @@
 <template>
 
 <div>
+
+<div>
+  <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
+    <b-dropdown-item>First Action</b-dropdown-item>
+    <b-dropdown-item>Second Action</b-dropdown-item>
+    <b-dropdown-item>Third Action</b-dropdown-item>
+    <b-dropdown-divider></b-dropdown-divider>
+    <b-dropdown-item active>Active action</b-dropdown-item>
+    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
+  </b-dropdown>
+</div>
+
   <b-card title="Card Title" no-body>
     <b-card-header header-tag="nav">
       <b-nav card-header tabs>
@@ -12,7 +24,7 @@
     </b-card-header>
 
     <b-card-body>
-      <!-- Child route gets rendered in <router-view> or <nuxt-child> -->
+     
       <router-view></router-view>
 
     </b-card-body>
