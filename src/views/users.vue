@@ -2,16 +2,19 @@
 
 <div>
 
-<div>
-  <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
-    <b-dropdown-item>First Action</b-dropdown-item>
-    <b-dropdown-item>Second Action</b-dropdown-item>
-    <b-dropdown-item>Third Action</b-dropdown-item>
-    <b-dropdown-divider></b-dropdown-divider>
-    <b-dropdown-item active>Active action</b-dropdown-item>
-    <b-dropdown-item disabled>Disabled action</b-dropdown-item>
-  </b-dropdown>
-</div>
+ <b-row class="mb-1 pl-1">
+    <b-col cols="2">
+    <label for="input-with-list">Mitglied auswählen</label>
+    <b-form-input list="input-list" id="input-with-list" ></b-form-input>
+    <b-form-datalist id="input-list" :options="options"></b-form-datalist>
+    </b-col>
+    
+
+    
+  
+</b-row>
+
+
 
   <b-card title="Card Title" no-body>
     <b-card-header header-tag="nav">
@@ -31,6 +34,7 @@
   </b-card>
 </div>
    
+
       
       
      
@@ -74,4 +78,14 @@
       }
     }
   }
+</script>
+
+<script>
+export default {
+  data() {
+    return {
+      options: ['Apple', 'Banana', 'Grape', 'Kiwi', 'Orange']
+    }
+  }
+}
 </script>
