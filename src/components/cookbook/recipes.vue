@@ -48,6 +48,7 @@
   export default {
     data() {
       return {
+        locale:0,
         value: 4.2
       }
     }
