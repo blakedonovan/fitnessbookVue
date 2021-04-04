@@ -16,8 +16,8 @@ npm run build
 ```
 
 ### Run production
-npm serve -s dist
-...
+serve -s dist
+
 ### Lints and fixes files
 ```
 npm run lint
