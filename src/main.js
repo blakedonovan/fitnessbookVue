@@ -1,16 +1,19 @@
 import Vue from 'vue'
 import App from './App.vue'
 
-import { MdButton, MdContent, MdTabs } from 'vue-material/dist/components'
-import 'vue-material/dist/vue-material.min.css'
-import 'vue-material/dist/theme/default.css'
+import { BootstrapVue, IconsPlugin ,BootstrapVueIcons} from 'bootstrap-vue'
 
-Vue.use(MdButton)
-Vue.use(MdContent)
-Vue.use(MdTabs)
+// Import Bootstrap an BootstrapVue CSS files (order is important)
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import router from './router'
 
+Vue.use(BootstrapVue);
 Vue.config.productionTip = false
-
+Vue.use(BootstrapVueIcons);
 new Vue({
-  render: h => h(App),
+BootstrapVue,
+IconsPlugin,
+  router,
+  render: h => h(App)
 }).$mount('#app')
