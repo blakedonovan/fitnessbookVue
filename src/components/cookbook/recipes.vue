@@ -1,40 +1,60 @@
 <template>
     <div>
-  <b-card-group >
-    <b-card title="Protein Pizza" img-src="https://thomassixt.de/wp-content/uploads/2019/08/thunfischpizza.jpg" img-alt="Image" img-size="200px" img-top>
+
+<div class="w-25">
+<b-form-group id="input-group-3"  label-for="input-3">
+ <b-form-select v-model="catSelection">
+<option v-for="cat in recipeCategories" v-bind:key="cat" lazy>
+
+  {{cat.name}} - {{cat.category_id}}
+  </option>
+  </b-form-select>
+      </b-form-group>
+
       
-        <div>
-    <b-form-rating v-model="value" :locale="locale" show-value precision="1"></b-form-rating>
-    
+</div>
+{{catSelection}}
+  
+<ul>
+<div v-for="recipe in recipes" v-bind:key="recipe">
+  {{recipe.recipe_name}}
   </div>
-      <b-card-text>
-         
-
-        Eiweiß : 120g || Kohlehydrate : 50g || 
-
-        Zubereitung: 
-
-      </b-card-text>
-      <template #footer>
-        <small class="text-muted">Last updated 3 mins ago</small>
-      </template>
-    </b-card>
-
-    
-  </b-card-group>
-
-
-
+</ul>
 </div>
 </template>
+
 <script>
+import axios from 'axios'
   export default {
     data() {
       return {
-        
-        locale:0,
-        value: 4.2
+        recipeCategories:[],
+        recipes:[],
+        cat:"",
+        catSelection:""
       }
-    }
+    },
+
+async mounted(){
+// fetch category selector , load recipes without selection   
+      try{
+
+
+      const recipeCat= await axios.get('http://localhost:8000/categories/recipeCategories')
+      this.recipeCategories = recipeCat.data
+      console.log(this.recipeCategories)
+
+      const recipes = await axios.get('http://localhost:8000/recipes/recipe')
+      this.recipes = recipes.data
+      //console.log(this.recipes)
+      
+      }catch(e){
+    
+    this.errors.push(e)
+
+      }
+      },
+
+
   }
 </script>

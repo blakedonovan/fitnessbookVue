@@ -2,6 +2,7 @@
 <template>
  <div>
    <div>
+
 <div class="col-1">
   <b-button v-b-toggle.collapse-1 variant="success" size="sm">Zutat hinzufügen</b-button>
 </div>
@@ -11,13 +12,13 @@
 
  
 
-  <b-form inline @submit.prevent="checkForm" method="post" id="handleIngredient" v-model="IngredientForm">
+  <b-form inline @submit.prevent="checkForm" method="post" id="handleIngredient" >
     <label class="sr-only" for="inline-form-input-Zutat">Zutat</label>
     <b-form-input
       id="inline-form-input-Zutat"
       class="ml-3 mb-2 mr-sm-2 mb-sm-0 sm"
       placeholder="Zutat"
-      v-model="IngredientForm.ingredient"
+      v-model="form.Zutat"
       ref="ingredient"
     ></b-form-input>
 
@@ -26,7 +27,7 @@
       <b-form-input 
       id="inline-form-input-Fett" 
       placeholder="Fett"
-      v-model="IngredientForm.fat"
+      v-model="form.Fett"
       ></b-form-input>
     
     </b-input-group>
@@ -36,7 +37,7 @@
       <b-form-input 
       id="inline-form-input-Kohlenhydrate" 
       placeholder="Kohlenhydrate"
-      v-model="IngredientForm.carbs"
+      v-model="form.Kohlenhydrate"
       ></b-form-input>
     </b-input-group>
 
@@ -45,7 +46,7 @@
       <b-form-input 
       id="inline-form-input-Protein"
        placeholder="Protein"
-       v-model="IngredientForm.protein"
+       v-model="form.Protein"
        ></b-form-input>
     </b-input-group>
 
@@ -55,9 +56,19 @@
       <b-form-input 
       id="inline-form-input-Kalorien"
        placeholder="Kalorien"
-       v-model="IngredientForm.kcal"
+       v-model="form.kcal"
        ></b-form-input>
     </b-input-group>
+
+<label class="sr-only" for="inline-form-input-Protein">EAN</label>
+    <b-input-group class="mb-2 mr-sm-2 mb-sm-0" >
+      <b-form-input 
+      id="inline-form-input-Kalorien"
+       placeholder="EAN"
+       v-model="form.ean"
+       disabled
+       ></b-form-input >
+    </b-input-group >
 
     <b-button variant="primary" v-b-toggle.collapse-1  v-on:click="checkForm" class="xs" >Speichern</b-button>
   </b-form>
@@ -68,8 +79,8 @@
 </div>
 
 
-<div class="col-auto">
- <b-input-group  class="mt-2 mb-2 pl-1 " >
+<div class="col-auto pl-0">
+ <b-input-group  class="w-25 mt-2 mb-2 pl-1 " >
 <b-input-group-prepend is-text>
         <b-icon icon="search" variant="success"></b-icon>
       </b-input-group-prepend>
@@ -82,7 +93,7 @@
   </div>
 
   
-<b-table  
+<b-table  class="col-auto pl-0"
  
 
  sticky-header
@@ -113,17 +124,18 @@ import axios from 'axios'
 
   //table handling
   search:'',   // search string for table 
-  errors:'',
+  errors:[],
  sortBy: 'Zutat',
  sortDesc: false,
 //table handling
 
-IngredientForm:{
-ingridient:'',
-fat:null,
-carbs:null,
-protein:null,
-kcal:null
+form:{
+Zutat:'',
+Fett:null,
+Kohlenhydrate:null,
+Protein:null,
+kcal:null,
+ean:0
 
 },
 IngredientHandler:'',
@@ -132,12 +144,12 @@ IngredientHandler:'',
     ingridients:[],
 
     nutritionCat: [
-      {key:'',sortable:false},
+      {key:'id',sortable:false},
       { key: 'Zutat' , sortable: true },
       { key: 'Fett', sortable: true },
       { key: 'Kohlenhydrate', sortable: true },
       { key: 'Protein', sortable: true },
-      { key: 'Kcal', sortable: true }
+      { key: 'kcal', sortable: true }
         ],
 
       }
@@ -147,11 +159,10 @@ computed:{
 
 },
 
-
     async mounted(){
-      
+// fetch table data      
       try{
-  
+
 
       const response = await axios.get('http://localhost:8000/cookbook/ingredient')
       this.ingridients = response.data
@@ -167,28 +178,38 @@ computed:{
    methods:{
 
 
+
+//post ingredient data
         checkForm: function() { 
-var zutat = document.
-getElementById("inline-form-input-Zutat")
-.value
 
 
-var fat = document.
-getElementById("inline-form-input-Fett")
-.value
+
+//console.log(JSON.stringify(this.form))
+
+if(this.form.Zutat && this.form.Fett && this.form.Kohlenhydrate && this.form.Protein && this.form.kcal && this.form.kcal){
+
+axios.post('http://localhost:8000/cookbook/ingredient', this.form)
+                 .then((res) => {
+
+                   this.ingridients = res.data;
+              
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     //Perform action in always
+                 });
 
 
-alert(zutat+" "+fat)
 
-           axios.get('http://localhost:8000/cookbook/addIngredients'+{zutat}+{fat}).
-         then(function(){
+    }else{
+        alert("sth is missing")
 
- //console.log(response)
-         })
-     
-
-
-    },
+    } 
+    }
+    
+    ,
        
       }
 
