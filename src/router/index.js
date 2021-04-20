@@ -41,7 +41,19 @@ const routes = [
   component: () => import('../views/cookbook.vue'),
   
   children:[
-    { path: '/cookbook/recipes',component: () => import('../components/cookbook/recipes.vue') }
+    { 
+      path: '/cookbook/recipes',
+      component: () => import('../components/cookbook/recipes.vue') ,
+
+    children:[
+      {
+
+      path: '/cookbook/recipeDetails',
+      component: () => import('../components/cookbook/recipeDetails.vue') ,
+    }
+  ],  
+  
+}
     ,
     {path: '/cookbook/ingredients',component: () => import('../components/cookbook/ingredients.vue')}
 

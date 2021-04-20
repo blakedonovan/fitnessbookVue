@@ -1,5 +1,6 @@
 
 <template>
+<b-container fluid>
  <div>
    <div>
 
@@ -79,7 +80,7 @@
 </div>
 
 
-<div class="col-auto pl-0">
+<div class="col-6 pl-0">
  <b-input-group  class="w-25 mt-2 mb-2 pl-1 " >
 <b-input-group-prepend is-text>
         <b-icon icon="search" variant="success"></b-icon>
@@ -112,7 +113,8 @@
   
    </div>
  
-  
+  </b-container>
+
 </template>
 
 <script>

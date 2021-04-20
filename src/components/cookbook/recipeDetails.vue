@@ -4,7 +4,8 @@
   <b-navbar type="light" variant="light" id="recipe_bar">
     <b-nav-form>
       <b-form-input class="mr-sm-2" placeholder="Search"></b-form-input>
-      <b-button variant="outline-success" class="my-2 my-sm-0" type="submit">Search</b-button>
+      <b-button variant="outline-success" class="my-2 my-sm-0" type="submit">Searchx</b-button>
+    <b-button>{{title}}</b-button>
     </b-nav-form>
   </b-navbar>
 </div>
@@ -56,7 +57,7 @@ import axios from 'axios'
   
     data() {
       return {
-      
+      title:'recipeDetails',
         recipeCategories:[],
         recipes:[],
         filteredRecipes:[],
