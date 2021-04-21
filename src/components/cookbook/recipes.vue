@@ -21,12 +21,13 @@
 
       
 
-{{catSelection}}
+
   
 <b-card-group deck>
-<b-card  img-src="https://placekitten.com/g/150/50" img-alt="Image" img-height="150px" img-width="50px" img-top v-for="recipe in recipes" v-bind:key="recipe" lazy>
+<b-card :title="recipe.recipe_name" img-src="https://placekitten.com/g/150/50" img-alt="Image" img-height="100px" img-width="50px" img-top v-for="recipe in recipes" v-bind:key="recipe" lazy>
+  {{recipe.recipe_id}}
       <b-card-text>
-  {{recipe.recipe_name}}
+  Zutaten
       </b-card-text>
       <template #footer>
         <small class="text-muted">Last updated 3 mins ago</small>
@@ -44,8 +45,10 @@
 .recipe_bar {
   color: rgb(37, 13, 104);
 }
-
-#foodCat{
+.card {
+    min-height: 200px;
+}
+.foodCat{
   color: rgb(0, 204, 255);
 }
 </style>
@@ -59,6 +62,7 @@ import axios from 'axios'
       
         recipeCategories:[],
         recipes:[],
+        recipeIngredients:[],
         filteredRecipes:[],
      
         catSelection:0,
@@ -101,7 +105,7 @@ async mounted(){
           
           this.filteredRecipes = await axios.get('http://localhost:8000/recipes/recipeId/'+this.catSelection)
           this.recipes = this.filteredRecipes.data
-   
+        
           console.log(this.recipes)
         }
       }
