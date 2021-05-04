@@ -19,5 +19,6 @@ new Vue({
 BootstrapVue,
 IconsPlugin,
   router,
+ 
   render: h => h(App)
 }).$mount('#app')
