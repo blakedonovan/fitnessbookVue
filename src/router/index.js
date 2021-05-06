@@ -38,12 +38,19 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import( '../views/users.vue'),
+    
     children: [
-      { path: '/users/profile',component: () => import('../components/users/profile.vue') },
-      { path: '/users/trainingsplans',component: () => import('../components/users/trainingsplans.vue') },
-      { path: '/users/biometrics',component: () => import('../components/users/biometrics.vue') }
+      { 
+        path: '/users/profile',
+        component: () => import('../components/users/profile.vue') },
+      { path: '/users/trainingsplans',
+        component: () => import('../components/users/trainingsplans.vue') },
+      { path: '/users/biometrics',
+        component: () => import('../components/users/biometrics.vue') }
     ]
   },
+  
+  
   {
   path: '/cookbook',
   name:'Cookbook',
