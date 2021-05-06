@@ -2,19 +2,28 @@
     <b-container fluid>
 
   <b-button>
-    <b-link :to="{path: '/cookbook/recipes',params: { userId: 123 }}">Back</b-link>
+    <b-link :to="{path: '/cookbook/recipes'}">Back</b-link>
   </b-button>
 
-<b-card-group deck>
-<b-card  img-src="https://placekitten.com/g/150/50" img-alt="Image" img-height="150px" img-width="50px" img-top v-for="recipe in recipes" v-bind:key="recipe" lazy>
-      <b-card-text>
-  {{recipe.recipe_name}}
+ 
+<b-card  >{{RecipeName}}
+      <b-card-text v-for="recipeInfo in RecipeDetails " v-bind:key="recipeInfo" lazy>
+ <li> {{recipeInfo.Zutat}} -{{recipeInfo.ingredient_amount}} g</li>
+
+
+ 
       </b-card-text>
+
+
+
       <template #footer>
-        <small class="text-muted">Last updated 3 mins ago</small>
+        <b-button >Bearbeiten</b-button>
+        <small class="text-muted"> </small>
       </template>
     </b-card>
-</b-card-group>
+
+
+
 </b-container>
 
 
@@ -34,40 +43,50 @@
 
 <script>
 import axios from 'axios'
+
+
   export default {
   
     data() {
       return {
       title:'recipeDetails',
-  
-        recipes:[],
-        filteredRecipes:[],
-     
-        catSelection:0,
+  recipeId:0,
+  RecipeName:'',
+    RecipeDetails:[],     
+            ingredients: [],  
         errors:[]
       }
     },
 
 async mounted(){
 // fetch category selector , load recipes without selection   
-      try{
+      
 
 
    
 
-      const recipes = await axios.get('http://localhost:8000/recipes/recipe/')
-      this.recipes = recipes.data
-      console.log(this.recipes)
       
-      }catch(e){
+      
     
-    this.errors.push(e)
 
-      }
+
+
       },
 
-      created () {
-        
+      async created  () {
+
+        try{
+        this.recipeId = this.$route.params.recipeId;
+
+         this.RecipeDetailFetch = await axios.get('http://localhost:8000/recipes/recipeDetail/'+this.recipeId)
+          this.RecipeDetails = this.RecipeDetailFetch.data
+          this.ingredients =this.RecipeDetailFetch.data
+          console.log(this.RecipeDetails)
+          }catch(e){
+            this.errors.push(e)
+
+      }
+    
   },
   watch: {
    
@@ -75,13 +94,7 @@ async mounted(){
   },
       methods:{
 
-        getRecipesById: async function(){
-          
-          this.filteredRecipes = await axios.get('http://localhost:8000/recipes/recipeId/'+this.catSelection)
-          this.recipes = this.filteredRecipes.data
-   
-          console.log(this.recipes)
-        }
+       
       }
 
 

@@ -1,21 +1,29 @@
 <template>
-  <h3>Fitnessbook Admin Panel</h3>
+<div>
+
+ <b-card title="Card Title" no-body>
+    <b-card-header header-tag="nav">
+      <b-nav card-header tabs lazy>
+
+          
+     
+        <b-nav-item to="/fitnessbook/manageUsers" exact exact-active-class="active">Benutzerverwaltung</b-nav-item>
+        <b-nav-item to="/fitnessbook/manageTrainingUnits" exact exact-active-class="active">Trainings Einheiten</b-nav-item>
+        
+      </b-nav>
+    </b-card-header>
+
+    <b-card-body>
+     
+      <router-view></router-view>
+
+    </b-card-body>
+  </b-card>
+</div>
+   
 </template>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #ffffff;
-}
+
 </style>

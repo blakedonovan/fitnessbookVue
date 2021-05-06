@@ -73,8 +73,13 @@
       
       <b-img src="https://www.edeka.de/media/01-rezeptbilder/rezeptbilder-i-p/rez-edeka-pizza-funghi-rezept-i-p.jpg?imwidth=960&imdensity=1" fluid alt="Fluid image"></b-img>
       
-      <p><b-button v-on:click="info(row.item.recipe_id)">View - {{ row.item.recipe_id }}</b-button></p>
-      <router-link :to="{path: '/cookbook/recipeDetails'}">Rezept</router-link>
+     
+      <router-link :to="{name:'RecipeDetails',
+                    params: { recipeId: row.item.recipe_id }
+                  ,query:{ RecipeName: row.item.recipe_name}}
+                    ">
+                    Rezept {{row.item.recipe_id}}
+      </router-link>
             </b-card>
             </b-col>
 

@@ -15,8 +15,17 @@ const routes = [
     
   
   children:[
-    { path: '/fitnessbook/manageTrainingUnits',component: () => import('../components/fitnessbook/manageTrainingUnits.vue') }
-    
+
+    {   
+        path: '/fitnessbook/manageTrainingUnits',
+        name:'ManageTrainingUnits',
+        component: () => import('../components/fitnessbook/manageTrainingUnits.vue') },
+      
+    { 
+        path: '/fitnessbook/manageUsers',
+        name:'ManageUsers',
+        component: () => import('../components/fitnessbook/manageUsers.vue') 
+    },
 
   ]
     // landing page
@@ -43,13 +52,15 @@ const routes = [
   children:[
     { 
       path: '/cookbook/recipes',
+      name:'Recipes',
       component: () => import('../components/cookbook/recipes.vue') 
     },
 
    
       
     {
-      path: '/cookbook/recipeDetails',
+      path: '/cookbook/recipeDetails/:recipeId',
+      name:'RecipeDetails',
       component: () => import('../components/cookbook/recipeDetails.vue') 
     },
     

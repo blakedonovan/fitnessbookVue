@@ -13,7 +13,7 @@
 
  
 
-  <b-form inline @submit.prevent="checkForm" method="post" id="handleIngredient" >
+  <b-form inline @submit.prevent="checkForm" method="post" id="handleIngredient" class="">
     <label class="sr-only" for="inline-form-input-Zutat">Zutat</label>
     <b-form-input
       id="inline-form-input-Zutat"
@@ -62,13 +62,13 @@
     </b-input-group>
 
 <label class="sr-only" for="inline-form-input-Protein">EAN</label>
-    <b-input-group class="mb-2 mr-sm-2 mb-sm-0" >
+    <b-input-group class="mb-2 mr-sm-2 mb-sm-0" hidden>
       <b-form-input 
       id="inline-form-input-Kalorien"
        placeholder="EAN"
        v-model="form.ean"
        disabled
-       ></b-form-input >
+       ></b-form-input>
     </b-input-group >
 
     <b-button variant="primary" v-b-toggle.collapse-1  v-on:click="checkForm" class="xs" >Speichern</b-button>

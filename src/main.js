@@ -16,6 +16,7 @@ Vue.use(BootstrapVueIcons);
 Vue.use(VueAxios, axios)
 
 new Vue({
+
 BootstrapVue,
 IconsPlugin,
   router,
