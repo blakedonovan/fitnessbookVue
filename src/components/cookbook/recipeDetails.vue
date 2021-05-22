@@ -1,13 +1,25 @@
 <template>
     <b-container fluid>
+      <b-row align-v="start">
 
-  <b-button>
-    <b-link :to="{path: '/cookbook/recipes'}">Back</b-link>
-  </b-button>
+    <b-col >
+    <b-link  :to="{path: '/cookbook/recipes'}">
+    
+    <b-icon icon="arrow-left-square" aria-hidden="true">
 
- 
-<b-card  >{{RecipeName}}
-      <b-card-text v-for="recipeInfo in RecipeDetails " v-bind:key="recipeInfo" lazy>
+    </b-icon>
+    
+    </b-link>
+    </b-col>
+
+ </b-row>
+<b-card >{{RecipeName}}
+  
+      <b-card-text 
+      v-for="recipeInfo in RecipeDetails " 
+      v-bind:key="recipeInfo" 
+      lazy>
+
  <li> {{recipeInfo.Zutat}} -{{recipeInfo.ingredient_amount}} g</li>
 
 
@@ -18,7 +30,7 @@
 
       <template #footer>
         <b-button >Bearbeiten</b-button>
-        <small class="text-muted"> </small>
+       
       </template>
     </b-card>
 
@@ -49,24 +61,17 @@ import axios from 'axios'
   
     data() {
       return {
-      title:'recipeDetails',
-  recipeId:0,
-  RecipeName:'',
-    RecipeDetails:[],     
-            ingredients: [],  
-        errors:[]
+       title:'recipeDetails',
+       recipeId:0,
+       RecipeName:'',
+       RecipeDetails:[],     
+       ingredients: [],  
+       errors:[]
       }
     },
 
 async mounted(){
-// fetch category selector , load recipes without selection   
-      
-
-
-   
-
-      
-      
+     
     
 
 

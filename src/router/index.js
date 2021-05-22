@@ -77,7 +77,9 @@ const routes = [
       component: () => import('../components/cookbook/ingredients.vue')}
 
   ]
-  }
+  },
+
+ 
 ]
 
 const router = new VueRouter({

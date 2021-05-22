@@ -2,7 +2,7 @@
 
 <template>
 <div>
-{{title}} 
+{{title}} {{memberID}}
 </div>
 </template>
 
@@ -32,6 +32,7 @@ data(){
 return{
 
     title:'Benutzer Verwaltung',
+    memberID:this.$store.state.selection.selected,
 }
 }
 }

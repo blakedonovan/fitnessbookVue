@@ -25,27 +25,21 @@
       
     
     </b-nav-form>
+<b-pagination 
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
+
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
+
   </b-navbar>
 </div>
 
 
 
       
-
-
-<!--  
-<b-card-group deck>
-<b-card :title="recipe.recipe_name" img-src="https://placekitten.com/g/150/50" img-alt="Image" img-height="100px" img-width="50px" img-top v-for="recipe in recipes" v-bind:key="recipe" lazy>
-  {{recipe.recipe_id}}
-      <b-card-text>
-  Zutaten
-      </b-card-text>
-      <template #footer>
-       
-      </template>
-    </b-card>
-</b-card-group>
--->
 
 
    <div>
@@ -55,6 +49,8 @@
     :filter="findRecipe"
     :items="recipes" 
     :fields="fields"
+    :per-page="perPage"
+    :current-page="currentPage"
     lazy
     >
 
@@ -71,7 +67,9 @@
 
          <p>{{row.item.recipe_image_url}}</p>
       
-      <b-img src="https://www.edeka.de/media/01-rezeptbilder/rezeptbilder-i-p/rez-edeka-pizza-funghi-rezept-i-p.jpg?imwidth=960&imdensity=1" fluid alt="Fluid image"></b-img>
+      <b-img src="https://www.edeka.de/media/01-rezeptbilder/rezeptbilder-i-p/rez-edeka-pizza-funghi-rezept-i-p.jpg?imwidth=960&imdensity=1" 
+      fluid alt="Fluid image">
+      </b-img>
       
      
       <router-link :to="{name:'RecipeDetails',
@@ -106,7 +104,8 @@ import axios from 'axios'
   
     data() {
       return {
-
+perPage: 3,
+        currentPage: 1,
 fields: [
 
  
@@ -149,6 +148,8 @@ async mounted(){
     this.errors.push(e)
 
       }
+
+   
       },
 
       created () {
