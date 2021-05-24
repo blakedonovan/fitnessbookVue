@@ -7,8 +7,13 @@ Vue.use(Vuex);
  
 export default new Vuex.Store({
  state: {
-    selection: {
-        selected:null
+
+  test:{
+    val:'67'
+}
+
+    ,selection: {
+        memberSelection:null
       },
 
 
@@ -17,13 +22,20 @@ export default new Vuex.Store({
 
  getters: {
 
-    //selected: state => {return state.selection.selected}
+    memberSelection: state => state.selection.memberSelection
+
+    
  },
  mutations: {
 
-    selectMember (state, payload) {
-        state.selection.selected = payload
-      }
+    selectMember (state, memberSelection) {
+        state.selection.memberSelection = memberSelection
+      },
+
+     
+     
+        
+
  },
  actions: {
 

@@ -6,19 +6,29 @@ hi
 </template>
 <script>
 export default {
+  watch: {
+    memberID () { 
+      return null 
+    },
+    
+  },
   name: 'manageTrainingUnits',
 
   mounted () {
       
-   console.log(this.$store.state.selection.selected);
+   console.log(this.$store.state.selection.memberSelection);
   
 },
   data() {
       return {
     
-       memberID:this.$store.state.selection.selected,
+       memberID:this.$store.state.selection.memberSelection,
    
       }
+    },
+    computed(){
+
+
     },
 
 }

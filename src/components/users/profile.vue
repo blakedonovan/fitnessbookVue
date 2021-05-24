@@ -2,7 +2,7 @@
 <template>
  
   <div>
- {{memberSelect}}
+{{$store.state.selection.memberSelection}}
   <b-form inline>
     <label class="sr-only" for="inline-form-input-name">Name</label>
     <b-form-input
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import profile from '../../views/users.vue'
+
   export default {
 
    
@@ -40,14 +40,15 @@ import profile from '../../views/users.vue'
       },
 
  Components: {
- profile
+
     },
 
 
     data () {
 
     return {
-      memberSelect:0
+      memberSelect:0,
+      memberSelection:null
 
     }
   },
@@ -59,7 +60,7 @@ import profile from '../../views/users.vue'
     
   
    mounted(){
-
+console.log(this.$store.state.selection.memberSelection);
 
   },
 

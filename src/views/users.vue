@@ -2,15 +2,13 @@
 
 <div>
   
-
-
  <b-row class="mb-1 pl-1 pt-1">
     <b-col cols="2">
 <b-form-group id="memberListing"  label-for="memberListing" class="mr-sm-2">
   
- <b-form-select v-model="memberSelection" :title="memberSelection" @change="getUserID"  aria-describedby="memberListing">
+ <b-form-select v-model="memberSelection" :title="memberSelection" @change="changeMember"  aria-describedby="memberListing">
  
-<option disabled value="" selected>Mitglied auswählen</option>
+<option disabled value="" memberSelection>Mitglied auswählen</option>
 
 <option v-for="member in memberList" v-bind:key="member" :value="member.cb_userid" lazy>
 
@@ -18,7 +16,8 @@
   </option>
   </b-form-select>
 
- 
+
+
       </b-form-group>
 
 
@@ -34,7 +33,7 @@
   
  </b-row>
 
-<Biometrics :title="memberSelection"></Biometrics>
+
 
     
 
@@ -65,7 +64,7 @@
 
 <script>
 import axios from 'axios'
-import Biometrics from "@/components/users/biometrics.vue";
+
   export default {
   
  
@@ -77,8 +76,7 @@ import Biometrics from "@/components/users/biometrics.vue";
 
       profileList:'http://localhost:8000/userProfiles/profileList',
       memberList:[],  
-      memberSelection:null,
-
+      memberSelection:0,
       }
     },
 
@@ -90,7 +88,7 @@ import Biometrics from "@/components/users/biometrics.vue";
 
     components:{
 
-  Biometrics
+ 
     },
    async mounted(){
 
@@ -116,15 +114,13 @@ import Biometrics from "@/components/users/biometrics.vue";
    
       },
     methods: {
-     getUserID :function(){
+   changeMember:function(){
+   
+     this.$store.commit("selectMember", this.memberSelection)
+  
 
-    // this.childMemberSelect = this.memberSelection
-    // console.log(this.childMemberSelect)
-     
-     },
-     onChildClick (value) {
-      this.fromChild = value
     }
+    
       },
       
      

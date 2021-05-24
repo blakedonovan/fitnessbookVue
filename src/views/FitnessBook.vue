@@ -35,6 +35,9 @@
 //import { ManageTrainingUnits } from '@/components/fitnessbook/manageTrainingUnits.vue'
 
 export default ({
+  mounted () {
+   
+  },
   methods: {
 
     changeMember:function(){
