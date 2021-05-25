@@ -1,25 +1,46 @@
 <template>
 
 <div>
-
- <b-row class="mb-1 pl-1">
+  
+ <b-row class="mb-1 pl-1 pt-1">
     <b-col cols="2">
-    <label for="input-with-list">Mitglied auswählen</label>
-    <b-form-input list="input-list" id="input-with-list" ></b-form-input>
-    <b-form-datalist id="input-list" :options="options"></b-form-datalist>
+<b-form-group id="memberListing"  label-for="memberListing" class="mr-sm-2">
+  
+ <b-form-select v-model="memberSelection" :title="memberSelection" @change="changeMember"  aria-describedby="memberListing">
+ 
+<option disabled value="" memberSelection>Mitglied auswählen</option>
+
+<option v-for="member in memberList" v-bind:key="member" :value="member.cb_userid" lazy>
+
+ {{member.user_name}}
+  </option>
+  </b-form-select>
+
+
+
+      </b-form-group>
+
+
+    
+
     </b-col>
     
+ <b-col cols="1" class="pt-2">
+   
+   
+
+    </b-col>
+  
+ </b-row>
+
+
 
     
-  
-</b-row>
-
-
 
   <b-card title="Card Title" no-body>
     <b-card-header header-tag="nav">
       <b-nav card-header tabs>
-        <!-- <b-nav-item>'s with child routes. Note the trailing slash on the first <b-nav-item> -->
+
         <b-nav-item to="/users/profile" exact exact-active-class="active">Profil</b-nav-item>
         <b-nav-item to="/users/trainingsplans" exact exact-active-class="active">Trainingspläne</b-nav-item>
         <b-nav-item to="/users/biometrics" exact exact-active-class="active">Biometrie</b-nav-item>
@@ -42,50 +63,68 @@
 </template>
 
 <script>
+import axios from 'axios'
+
   export default {
+  
+ 
 
     
-    data() {
+    data:()=> {
       return {
-        form: {
-          weight: '',
-          size: '',
-          age: '',
-    
-        },
-        
-        show: true
+     
+
+      profileList:'http://localhost:8000/userProfiles/profileList',
+      memberList:[],  
+      
       }
     },
+
+    props:{
+
+
+
+    },
+
+    components:{
+
+ 
+    },
+   async mounted(){
+
+      try{
+
+
+      let memberListData= await axios.get(this.profileList)
+      this.memberList = memberListData.data
+      console.log(this.memberList)
+
+
+
+
+      
+
+      
+      }catch(e){
+    
+    this.errors.push(e)
+
+      }
+
+   
+      },
     methods: {
-      onSubmit(event) {
-        event.preventDefault()
-        alert(JSON.stringify(this.form))
+   changeMember:function(){
+   
+     this.$store.commit("selectMember", this.memberSelection)
+  console.log(this.memberSelection)
+
+    }
+    
       },
       
-      onReset(event) {
-        event.preventDefault()
-        // Reset our form values
-        this.form.weight = ''
-        this.form.size = ''
-        this.form.age = ''
      
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
-      }
     }
-  }
+  
 </script>
 
-<script>
-export default {
-  data() {
-    return {
-      options: ['Apple', 'Banana', 'Grape', 'Kiwi', 'Orange']
-    }
-  }
-}
-</script>
