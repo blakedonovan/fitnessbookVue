@@ -76,7 +76,7 @@ import axios from 'axios'
 
       profileList:'http://localhost:8000/userProfiles/profileList',
       memberList:[],  
-      memberSelection:0,
+      
       }
     },
 
@@ -117,7 +117,7 @@ import axios from 'axios'
    changeMember:function(){
    
      this.$store.commit("selectMember", this.memberSelection)
-  
+  console.log(this.memberSelection)
 
     }
     

@@ -2,13 +2,18 @@
 <template>
  
   <div>
-{{$store.state.selection.memberSelection}}
+
   <b-form inline>
+   <p> {{memberID}}
+
+   
+   </p>
     <label class="sr-only" for="inline-form-input-name">Name</label>
     <b-form-input
       id="inline-form-input-name"
       class="mb-2 mr-sm-2 mb-sm-0"
-      placeholder=""
+      placeholder='ID'
+     
     ></b-form-input>
 
     <label class="sr-only" for="inline-form-input-username">Username</label>
@@ -30,40 +35,44 @@
 </template>
 
 <script>
-
+import axios from 'axios'
+//import { mapGetters } from 'vuex'
   export default {
 
    
-      props: {
-
-   
-      },
-
- Components: {
-
-    },
-
-
     data () {
 
     return {
-      memberSelect:0,
-      memberSelection:null
-
+      memberID: null,
+      
+      userProfileData:'http://localhost:8000/userProfiles/profile/',
+      profile:[],
+userData:[]
+     
     }
   },
-
-
-  created () {
+ computed: {
+   
   },
+watch: {
 
+      '$store.state.selection.memberSelection': function() {
+      this.memberID= this.$store.state.selection.memberSelection
+      this.profile=axios.get('http://localhost:8000/userProfiles/profile/'+this.$store.state.selection.memberSelection)
+      console.log('profile '+this.$store.state.selection.memberSelection )
+  }
     
-  
-   mounted(){
-console.log(this.$store.state.selection.memberSelection);
-
   },
+ 
 
+  methods:{
+     
+  }
+,
+mounted(){
+
+  this.memberID = this.$store.state.selection.memberSelection
+}
     
    
   

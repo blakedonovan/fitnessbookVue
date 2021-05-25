@@ -1,7 +1,7 @@
 <template>
 
   <div class="accordion" role="tablist">
-{{$store.state.selection.memberSelection}}
+{{memberID}}
     <b-card no-body class="mb-1">
       <b-card-header header-tag="header" class="p-1" role="tab">
         <b-button block v-b-toggle.accordion-1 variant="info">Pull Day</b-button>
@@ -39,9 +39,21 @@
 </template>
 
 <script>
+//import axios from 'axios'
   export default {
+    
+  watch: {
+
+    '$store.state.selection.memberSelection': function() {
+      this.memberID=this.$store.state.selection.memberSelection
+      //axios.get('http://localhost:8000/userProfiles/profile/'+this.$store.state.selection.memberSelection);
+    console.log('training '+this.$store.state.selection.memberSelection )
+    
+  }
+  },
     data() {
       return {
+        memberID:null,
         text: `
           Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
           richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
@@ -54,6 +66,10 @@
         `
        
       }
+    },
+
+    mounted(){
+      this.memberID = this.$store.state.selection.memberSelection
     }
   }
 </script>

@@ -8,29 +8,27 @@ Vue.use(Vuex);
 export default new Vuex.Store({
  state: {
 
-  test:{
-    val:'67'
-}
-
-    ,selection: {
+selection: {
         memberSelection:null
       },
 
-
+     
  
 },
 
  getters: {
 
-    memberSelection: state => state.selection.memberSelection
+    memberSelection: state => state.selection.memberSelection,
+
 
     
  },
  mutations: {
 
-    selectMember (state, memberSelection) {
-        state.selection.memberSelection = memberSelection
+     selectMember (state, memberSelection) {
+       state.selection.memberSelection = memberSelection
       },
+      
 
      
      
@@ -39,10 +37,11 @@ export default new Vuex.Store({
  },
  actions: {
 
-    selectMember (context, payload) {
+    selectMember (context, memberSelection) {
         setTimeout(() => {
-          context.commit("selectMember", payload);
-        }, 100);
+          context.commit("selectMember", memberSelection);
+         
+        }, 1);
       }
  }
 });
