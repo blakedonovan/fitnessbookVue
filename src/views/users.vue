@@ -114,6 +114,7 @@ import axios from 'axios'
    
       },
     methods: {
+   
    changeMember:function(){
    
      this.$store.commit("selectMember", this.memberSelection)

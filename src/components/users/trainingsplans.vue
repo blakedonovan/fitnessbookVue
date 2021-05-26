@@ -39,15 +39,22 @@
 </template>
 
 <script>
-//import axios from 'axios'
+import axios from 'axios'
   export default {
+  methods: {
+    async fetchProfile(){
+
+  this.memberID = this.$store.state.selection.memberSelection
+  const response = await axios.get('http://localhost:8000/userProfiles/profile/'+this.memberID)
+  this.profile = response.data
+ console.log(this.profile)
+}
+  },
     
   watch: {
 
-    '$store.state.selection.memberSelection': function() {
-      this.memberID=this.$store.state.selection.memberSelection
-      //axios.get('http://localhost:8000/userProfiles/profile/'+this.$store.state.selection.memberSelection);
-    console.log('training '+this.$store.state.selection.memberSelection )
+  '$store.state.selection.memberSelection': function() {
+         this.fetchProfile()
     
   }
   },
