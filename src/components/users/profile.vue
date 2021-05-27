@@ -2,7 +2,7 @@
 <template>
  
   <div>
-
+{{date}}
 
    <b-card v-for="pf in profile" :key="pf"
     :title="pf.user_name"
@@ -54,6 +54,7 @@
 
 <script>
 import axios from 'axios'
+
 //import { mapGetters } from 'vuex'
   export default {
 
@@ -65,7 +66,8 @@ import axios from 'axios'
       
       userProfileData:'http://localhost:8000/userProfiles/profile/',
       profile:[],
-      bmi:null
+      bmi:null,
+      date:null
      
     }
   },
@@ -96,6 +98,7 @@ watch: {
 mounted(){
 
    this.fetchProfile()
+   this.date= Date();
 }
     
    
