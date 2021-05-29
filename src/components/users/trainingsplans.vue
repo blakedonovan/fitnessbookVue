@@ -111,8 +111,11 @@
  hover 
  :items="trainingUnits" 
  :fields="fields"
+
  lazy
  >
+
+ 
  </b-table>
 
   </b-container>
@@ -133,32 +136,59 @@ import axios from 'axios'
   methods: {
     
     async fetchTrainingsPlans(){
+      
+try {
 
   this.memberID = this.$store.state.selection.memberSelection
   const response = await axios.get('http://localhost:8000/individualTraining/trainingList/'+this.memberID);
   this.trainingPlans = response.data
-  console.log(this.trainingPlans)
+
+} catch (error) {
+  console.log('failed to load db table')
+}
+  
+  console.table(this.trainingPlans)
 },
 async fetchTrainingUnitsbyTPId(value){
 
+
+ try {
+
+   const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
+   this.trainingUnits = response.data
+   console.table(this.trainingUnits)
  
-  const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
-  this.trainingUnits = response.data
-  console.log(this.trainingUnits)
+ } catch (error) {
+   console.log('failed to load db table')
+ }
+  
 },
 
 async getTrainingUnitsByCat(){
 
+try {
+
 const response = await axios.get('http://localhost:8000/individualTraining/getTrainingCats');
 this.trainingUnitsbyCat = response.data
+
 console.table(this.trainingUnitsbyCat)
+} catch (error) {
+console.log('db did not load')  
+}
+
 },
 async getTrainingCategorySelection(value){
+
+try {
 
 let response = await axios.get('http://localhost:8000/individualTraining/getTrainingCatSelection/'+value);
 
 this.trainingCatSelection = response.data
 console.table(this.trainingCatSelection) 
+} catch (error) {
+  console.log('db did not load')
+}
+
 
 },
 addTrainingUnit(value){
