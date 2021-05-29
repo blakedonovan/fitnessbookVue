@@ -27,6 +27,84 @@
 
             <b-form>
               <b-container fluid>
+     
+{{trainingPlan.name}}
+                   <b-row>
+    <b-col cols="1" class="ml-0 mb-1">
+      
+      <b-button 
+      v-b-toggle.addTrainingUnit 
+      variant="primary"
+      @click="getTrainingUnitsByCat"
+      >Trainingseinheit hinzufügen</b-button>
+      
+      </b-col>
+  <b-collapse id="addTrainingUnit" class="mt-2">
+    
+    <b-col cols="12" class="ml-0 mb-1">
+      
+  <b-form class="pt-2"  inline>
+
+  
+  <b-input-group prepend="Kategorie" class="mb-2 mr-sm-2 mb-sm-0">
+    <b-form-select
+      id="inline-form-custom-select-trainingUnits"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      :value="null"
+      v-model="trainingCat"
+      @change="getTrainingCategorySelection"
+    >
+    <option v-for="trainingUnitCat in trainingUnitsbyCat" :key="trainingUnitCat" :value="trainingUnitCat.id" >
+      {{trainingUnitCat.type}}
+  </option>
+    </b-form-select>
+</b-input-group>
+
+<b-input-group prepend="Trainingseinheit" class="mb-2 mr-sm-2 mb-sm-0" >
+    <b-form-select
+      id="inline-form-custom-select-trainingUnits"
+      class="mb-2 mr-sm-2 mb-sm-0"
+    
+      :value="null"
+      v-model="trainingUnit"
+      
+    >
+    
+    <option v-for="trainingCatSelect in trainingCatSelection" :key="trainingCatSelect" :value="trainingCatSelect.category_id" >
+      {{trainingCatSelect.name}}
+  </option>
+    </b-form-select>
+</b-input-group>
+
+    <label class="sr-only" for="inline-form-input-rep">Wiederholungen</label>
+    <b-input-group prepend="Wiederholungen" class="mb-2 mr-sm-2 mb-sm-0">
+    <b-form-input
+      id="inline-form-input-rep"
+      class="mb-2 mr-sm-2 mb-sm-0"
+      placeholder="Beispiel 5/5/5/5"
+      v-model="reps"
+    ></b-form-input>
+    </b-input-group>
+
+    <label class="sr-only" for="inline-form-input-weight">Gewicht</label>
+    <b-input-group prepend="Gewicht" class="mb-2 mr-sm-2 mb-sm-0">
+      <b-form-input 
+      id="inline-form-input-weight" 
+      placeholder="Beispiel 5/15/25/35"
+      v-model="weight"></b-form-input>
+    </b-input-group>
+
+
+
+    <b-button variant="primary" @click="addTrainingUnit(trainingPlan.id)" >Speichern</b-button>
+  </b-form>
+    </b-col>
+   
+  </b-collapse>
+      
+
+  </b-row>
+
 
 <b-table 
  striped 
@@ -68,7 +146,44 @@ async fetchTrainingUnitsbyTPId(value){
   this.trainingUnits = response.data
   console.log(this.trainingUnits)
 },
- 
+
+async getTrainingUnitsByCat(){
+
+const response = await axios.get('http://localhost:8000/individualTraining/getTrainingCats');
+this.trainingUnitsbyCat = response.data
+console.table(this.trainingUnitsbyCat)
+},
+async getTrainingCategorySelection(value){
+
+let response = await axios.get('http://localhost:8000/individualTraining/getTrainingCatSelection/'+value);
+
+this.trainingCatSelection = response.data
+console.table(this.trainingCatSelection) 
+
+},
+addTrainingUnit(value){
+let arr = {
+  "tpid":value,
+  "trainingUnit":this.trainingUnit,
+  "reps":this.reps,
+  "weight":this.weight,
+  }
+
+   // alert(JSON.stringify(this.addTrainingUnitForm)+value)
+   console.table(arr)
+   this.trainingUnit=""
+   this.reps=""
+   this.weight=""
+}
+ ,editTrainingUnit(){
+
+  alert('edit')
+},
+ removeTrainingUnit(){
+
+  alert('remove')
+},
+
   },
     
   watch: {
@@ -77,30 +192,38 @@ async fetchTrainingUnitsbyTPId(value){
          this.fetchTrainingsPlans()
     
   },
-    value:function(){
-      alert('hi')
-    }
+   
   },
     data() {
       return {
         memberID:null,
+        trainingUnitsbyCat:[],
+        trainingCatSelection:[],
         trainingPlans:[],
         trainingUnits:[],
+
 trainingPlandID:null,
-fields:[],
+fields:[
+  {key:'name',label:'Name'},
+  {key:'reps',label:'Wiederholungen'},
+  {key:'weight',label:'Gewicht'},
+  {key:'description',label:'Beschreibung'}
+],
 
-        types: [
-          'text',
-          'number',
-          'number',],
+trainingUnit:null,
+reps:null,
+weight:null,
+  
 
-         // placeholder:['Trainingseinheit','Weight','Wiederholungen']
+
+
+      
       }
     },
 
     mounted(){
   
-    
+    this.fetchTrainingsPlans()
   
     }
   }
