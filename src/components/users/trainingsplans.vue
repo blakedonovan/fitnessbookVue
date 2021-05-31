@@ -1,7 +1,44 @@
 <template>
 
   <div  class="accordion" role="tablist">
-{{memberID}}
+
+
+<b-row>
+<b-col cols="6" class="pr-3 pb-3">
+  <b-button 
+  variant="primary" 
+ 
+  id="createTbutton"
+  v-b-toggle.createTrainingPlan
+  >Trainingsplan erstellen</b-button>
+ 
+
+ 
+
+  </b-col>
+  <b-col >
+
+    <b-collapse cols="2" id="createTrainingPlan">
+     <b-form class="pt-0"  inline>
+
+ <b-input v-model="trainingPlanName" placeholder="Trainingsplan Name" width="25px"></b-input>
+
+
+
+    <b-button 
+    variant="primary" 
+    @click="addTrainingPlan(memberID)" 
+    class="ml-1"
+    
+    >Speichern</b-button>
+  </b-form>
+  </b-collapse>
+  </b-col>
+  
+
+
+</b-row>
+
 
     <b-card no-body class="mb-1" v-for="trainingPlan in trainingPlans" v-bind:key="trainingPlan">
       <b-card-header header-tag="header" class="p-1" role="tab">
@@ -111,11 +148,29 @@
  hover 
  :items="trainingUnits" 
  :fields="fields"
-
+:busy.sync="isBusy"
+ show-empty
+ table-variant="danger"
+ responsive
+ selectable
  lazy
  >
 
+  <template v-slot:cell(reps)="row">
+   
+   
+        <b-form-input v-model="row.item.reps"   />
  
+    
+  
+      </template>
+
+<template v-slot:cell(weight)="row">
+        <b-form-input  @click="editTrainingUnit" v-model="row.item.weight"  />
+   
+      </template>
+
+
  </b-table>
 
   </b-container>
@@ -136,15 +191,18 @@ import axios from 'axios'
   methods: {
     
     async fetchTrainingsPlans(){
-      
-try {
 
+try {
+this.isBusy = true
   this.memberID = this.$store.state.selection.memberSelection
   const response = await axios.get('http://localhost:8000/individualTraining/trainingList/'+this.memberID);
+  this.isBusy = false
   this.trainingPlans = response.data
 
 } catch (error) {
+  this.isBusy = false
   console.log('failed to load db table')
+  return this.trainingPlans=[]
 }
   
   console.table(this.trainingPlans)
@@ -191,6 +249,29 @@ console.table(this.trainingCatSelection)
 
 
 },
+
+addTrainingPlan(value){
+let trainingPlan={'user':value,'name':this.trainingPlanName}
+
+axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
+                 .then((res) => {
+                      console.log(res)
+              
+              this.fetchTrainingsPlans()
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     //Perform action in always
+                 });
+
+this.fetchTrainingsPlans()
+
+  
+
+},
+
 addTrainingUnit(value){
 let arr = {
   "tpid":value,
@@ -207,7 +288,7 @@ let arr = {
 }
  ,editTrainingUnit(){
 
-  alert('edit')
+  alert(this.row.item.weight)
 },
  removeTrainingUnit(){
 
@@ -227,17 +308,24 @@ let arr = {
     data() {
       return {
         memberID:null,
+        trainingPlanName:'',
         trainingUnitsbyCat:[],
         trainingCatSelection:[],
         trainingPlans:[],
         trainingUnits:[],
+
+        trainingPlanForm:{
+          memberID:null,
+          trainingPlanForm:null,
+        },
 
 trainingPlandID:null,
 fields:[
   {key:'name',label:'Name'},
   {key:'reps',label:'Wiederholungen'},
   {key:'weight',label:'Gewicht'},
-  {key:'description',label:'Beschreibung'}
+  {key:'description',label:'Beschreibung'},
+  {key:'gd',label:''}
 ],
 
 trainingUnit:null,
@@ -259,4 +347,6 @@ weight:null,
   }
 </script>
 
- 
+<style >
+
+</style>
