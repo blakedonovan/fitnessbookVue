@@ -148,28 +148,32 @@
  hover 
  :items="trainingUnits" 
  :fields="fields"
-:busy.sync="isBusy"
+ :busy.sync="isBusy"
  show-empty
- table-variant="danger"
+ table-variant="primary"
  responsive
  selectable
- lazy
+  lazy
  >
 
+      
   <template v-slot:cell(reps)="row">
    
    
-        <b-form-input v-model="row.item.reps"   />
+        <b-form-input v-model="row.item.reps"   disabled/>
  
     
   
       </template>
 
-<template v-slot:cell(weight)="row">
-        <b-form-input  @click="editTrainingUnit" v-model="row.item.weight"  />
+<template v-slot:cell(id)="row">
    
+   
+        <b-button v-model="row.item.id" @click="editUnit(row.item.id)">Bearbeiten</b-button>
+        <b-button v-model="row.item.id" @click="removeUnit(row.item.id,trainingPlan.id)">Löschen {{row.item.id}}</b-button>
+    
+  
       </template>
-
 
  </b-table>
 
@@ -286,15 +290,39 @@ let arr = {
    this.reps=""
    this.weight=""
 }
- ,editTrainingUnit(){
+ ,
+ 
+ editUnit(edit){
 
-  alert(this.row.item.weight)
+  console.log('edit'+' '+edit)
 },
- removeTrainingUnit(){
+async removeUnit(remove,tpid){
+//console.log(remove,tpid)
 
-  alert('remove')
-},
+try {
 
+
+ await axios.post('http://localhost:8000/individualTraining/removeTrainingUnit/'+remove)
+                 .then((res) => {
+                      console.log(res)
+
+                        this.fetchTrainingUnitsbyTPId(tpid)
+          
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     //Perform action in always
+                 });
+
+} catch (error) {
+
+  console.log('dataset for id did not exist' +error)
+}
+
+
+}
   },
     
   watch: {
@@ -321,11 +349,12 @@ let arr = {
 
 trainingPlandID:null,
 fields:[
+  
   {key:'name',label:'Name'},
   {key:'reps',label:'Wiederholungen'},
   {key:'weight',label:'Gewicht'},
   {key:'description',label:'Beschreibung'},
-  {key:'gd',label:''}
+  {key:'id',label:' '},
 ],
 
 trainingUnit:null,
