@@ -250,7 +250,8 @@ async fetchTrainingUnitsbyTPId(value){
 
 
  try {
-this.isDisabled=true
+
+   this.isDisabled=true
    const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
    this.trainingUnits = response.data
    console.table(this.trainingUnits)
