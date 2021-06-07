@@ -152,7 +152,7 @@
  show-empty
  table-variant="primary"
  responsive
- selectable
+
   lazy
  >
 
@@ -160,8 +160,23 @@
   <template v-slot:cell(reps)="row">
    
    
-        <b-form-input v-model="row.item.reps"   disabled/>
+        <b-form-input v-model="row.item.reps"   :disabled="isDisabled"/>
  
+    
+  
+      </template>
+<template v-slot:cell(weight)="row">
+   
+   
+        <b-form-input v-model="row.item.weight"   :disabled="isDisabled" />
+
+        <b-button v-model="row.item.id" @click="editUnit(row.item.id,row.item.reps,row.item.weight)">Bearbeiten</b-button>
+          <b-button 
+         
+          @click="saveUnitEdit(trainingPlan.id,row.item.id,row.item.reps,row.item.weight)"
+          >
+          Speichern
+          </b-button>
     
   
       </template>
@@ -169,8 +184,8 @@
 <template v-slot:cell(id)="row">
    
    
-        <b-button v-model="row.item.id" @click="editUnit(row.item.id)">Bearbeiten</b-button>
-        <b-button v-model="row.item.id" @click="removeUnit(row.item.id,trainingPlan.id)">Löschen {{row.item.id}}</b-button>
+        
+        <b-button v-model="removeUnit" @click="removeUnit(row.item.id,trainingPlan.id)">Löschen</b-button>
     
   
       </template>
@@ -311,10 +326,39 @@ var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
 }
  ,
  
- editUnit(edit){
+ editUnit(){
+this.isDisabled=false
 
-  console.log('edit'+' '+edit)
 },
+
+async saveUnitEdit(tpid,edit,reps,weight){
+
+
+
+var editUnitPlanUrl= 'http://localhost:8000/individualTraining/updateTrainingUnit/'+edit+'?reps='+reps+'&weight='+weight;
+ 
+ await axios.put(editUnitPlanUrl)
+
+                 .then((res) => {
+              console.table(res.data)
+               this.fetchTrainingUnitsbyTPId(tpid)
+   
+   
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     //Perform action in always
+                 });
+
+
+this.isDisabled=true
+
+  
+
+},
+
 async removeUnit(remove,tpid){
 //console.log(remove,tpid)
 
@@ -377,8 +421,7 @@ fields:[
 ],
 
 trainingUnit:null,
-reps:null,
-weight:null,
+isDisabled:true
   
 
 
