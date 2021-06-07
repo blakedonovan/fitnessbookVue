@@ -107,7 +107,7 @@
       
     >
     
-    <option v-for="trainingCatSelect in trainingCatSelection" :key="trainingCatSelect" :value="trainingCatSelect.category_id" >
+    <option v-for="trainingCatSelect in trainingCatSelection" :key="trainingCatSelect" :value="trainingCatSelect.id" >
       {{trainingCatSelect.name}}
   </option>
     </b-form-select>
@@ -276,19 +276,38 @@ this.fetchTrainingsPlans()
 
 },
 
-addTrainingUnit(value){
+async addTrainingUnit(value){
+
 let arr = {
-  "tpid":value,
-  "trainingUnit":this.trainingUnit,
+  "training_plans_individual_id":value,
+  "trainingplan_unit_id":this.trainingUnit,
   "reps":this.reps,
   "weight":this.weight,
   }
 
-   // alert(JSON.stringify(this.addTrainingUnitForm)+value)
-   console.table(arr)
-   this.trainingUnit=""
+console.table(arr)
+var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
+ 
+ await axios.post(addUnitPlanUrl,arr)
+                 .then(() => {
+              
+               this.fetchTrainingUnitsbyTPId(value)
+   
    this.reps=""
    this.weight=""
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     //Perform action in always
+                 });
+
+
+
+
+
+  
 }
  ,
  
