@@ -42,7 +42,8 @@
 
     <b-card no-body class="mb-1" v-for="trainingPlan in trainingPlans" v-bind:key="trainingPlan">
       <b-card-header header-tag="header" class="p-1" role="tab">
-
+<b-row>
+  <b-col cols="11">
         <b-button 
         block 
         v-b-toggle="`accordion-${trainingPlan.id}`" 
@@ -50,7 +51,11 @@
         variant="info">
         {{trainingPlan.name}}
         </b-button>
-
+        </b-col>
+  <b-col>
+        <b-button block><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
+</b-col>
+</b-row>
       </b-card-header>
 
       <b-collapse 
@@ -65,7 +70,7 @@
             <b-form>
               <b-container fluid>
      
-{{trainingPlan.name}}
+
                    <b-row>
     <b-col cols="1" class="ml-0 mb-1">
       
@@ -169,23 +174,37 @@
    
    
         <b-form-input v-model="row.item.weight"   :disabled="isDisabled" />
+<b-button-group >
 
-        <b-button v-model="row.item.id" @click="editUnit(row.item.id,row.item.reps,row.item.weight)">Bearbeiten</b-button>
-          <b-button 
+        <b-button
+        
+        variant="primary"
+         v-model="row.item.id"
+          @click="editUnit(row.item.id,row.item.reps,row.item.weight)">
+          <b-icon 
+          icon="pencil-square" 
+          aria-hidden="true">
+          </b-icon>
+          </b-button>
          
-          @click="saveUnitEdit(trainingPlan.id,row.item.id,row.item.reps,row.item.weight)"
-          >
-          Speichern
+          <b-button 
+      
+         variant="info"
+          @click="saveUnitEdit(trainingPlan.id,row.item.id,row.item.reps,row.item.weight)">
+         <b-icon 
+         icon="check2-circle" 
+         aria-hidden="true">
+         </b-icon>
           </b-button>
     
-  
+  </b-button-group >
       </template>
 
 <template v-slot:cell(id)="row">
    
    
         
-        <b-button v-model="removeUnit" @click="removeUnit(row.item.id,trainingPlan.id)">Löschen</b-button>
+        <b-button v-model="removeUnit" @click="removeUnit(row.item.id,trainingPlan.id)"><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
     
   
       </template>
@@ -212,6 +231,7 @@ import axios from 'axios'
     async fetchTrainingsPlans(){
 
 try {
+  
 this.isBusy = true
   this.memberID = this.$store.state.selection.memberSelection
   const response = await axios.get('http://localhost:8000/individualTraining/trainingList/'+this.memberID);
@@ -230,7 +250,7 @@ async fetchTrainingUnitsbyTPId(value){
 
 
  try {
-
+this.isDisabled=true
    const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
    this.trainingUnits = response.data
    console.table(this.trainingUnits)
@@ -282,7 +302,7 @@ axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
                    console.log(error)
                  
                  }).finally(() => {
-                     //Perform action in always
+                    
                  });
 
 this.fetchTrainingsPlans()
@@ -290,6 +310,29 @@ this.fetchTrainingsPlans()
   
 
 },
+
+removeTrainingPlan(value){
+let trainingPlan={'user':value,'name':this.trainingPlanName}
+
+axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
+                 .then((res) => {
+                      console.log(res)
+              
+              this.fetchTrainingsPlans()
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     
+                 });
+
+this.fetchTrainingsPlans()
+
+  
+
+},
+
 
 async addTrainingUnit(value){
 
@@ -315,7 +358,7 @@ var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
                    console.log(error)
                  
                  }).finally(() => {
-                     //Perform action in always
+                     
                  });
 
 
@@ -326,7 +369,7 @@ var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
 }
  ,
  
- editUnit(){
+async editUnit(){
 this.isDisabled=false
 
 },
@@ -341,6 +384,7 @@ var editUnitPlanUrl= 'http://localhost:8000/individualTraining/updateTrainingUni
 
                  .then((res) => {
               console.table(res.data)
+            
                this.fetchTrainingUnitsbyTPId(tpid)
    
    
@@ -349,18 +393,18 @@ var editUnitPlanUrl= 'http://localhost:8000/individualTraining/updateTrainingUni
                    console.log(error)
                  
                  }).finally(() => {
-                     //Perform action in always
+                     
                  });
 
 
 this.isDisabled=true
-
+this.editVisible=true
   
 
 },
 
 async removeUnit(remove,tpid){
-//console.log(remove,tpid)
+
 
 try {
 
@@ -414,15 +458,16 @@ trainingPlandID:null,
 fields:[
   
   {key:'name',label:'Name'},
-  {key:'reps',label:'Wiederholungen'},
-  {key:'weight',label:'Gewicht'},
-  {key:'description',label:'Beschreibung'},
+  {key:'reps',label:'Wiederholungen',tdClass: 'widthEl'},
+  {key:'weight',label:'Gewicht',tdClass: 'widthEl'},
+  {key:'description',label:'Beschreibung',tdClass: 'widthEl'},
   {key:'id',label:' '},
 ],
 
 trainingUnit:null,
-isDisabled:true
-  
+isDisabled:true,
+  editVisible:false,
+  editSave:true
 
 
 
@@ -438,6 +483,8 @@ isDisabled:true
   }
 </script>
 
-<style >
+<style scoped>
+
+
 
 </style>
