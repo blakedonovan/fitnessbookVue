@@ -53,7 +53,37 @@
         </b-button>
         </b-col>
   <b-col>
-        <b-button block><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
+     
+
+
+
+
+<b-button :id="`confirm-pop-${trainingPlan.id}`" block>
+
+  <b-icon icon="trash-fill" aria-hidden="true"></b-icon>
+</b-button>
+
+  <b-popover 
+  :target="`confirm-pop-${trainingPlan.id}`" 
+  variant="danger" triggers="focus">
+  
+    <template #title>Trainingsplan löschen ?</template>
+  
+    <b-button 
+    size="sm" 
+    variant="danger" 
+    @click="removeTrainingPlan(trainingPlan.id)">
+  
+        Ja
+  
+      </b-button>
+
+
+
+  </b-popover>
+
+ 
+
 </b-col>
 </b-row>
       </b-card-header>
@@ -84,18 +114,24 @@
   <b-collapse id="addTrainingUnit" class="mt-2">
     
     <b-col cols="12" class="ml-0 mb-1">
-      
-  <b-form class="pt-2"  inline>
+    
+  <b-form class="pt-2"   inline>
 
-  
+
   <b-input-group prepend="Kategorie" class="mb-2 mr-sm-2 mb-sm-0">
+   
     <b-form-select
       id="inline-form-custom-select-trainingUnits"
-      class="mb-2 mr-sm-2 mb-sm-0"
-      :value="null"
+      class="mb-2 mr-sm-2 mb-sm-0 "
+      
       v-model="trainingCat"
       @change="getTrainingCategorySelection"
+      required
+      
     >
+     <option selected disabled>
+      Bitte Kategorie wählen
+      </option>
     <option v-for="trainingUnitCat in trainingUnitsbyCat" :key="trainingUnitCat" :value="trainingUnitCat.id" >
       {{trainingUnitCat.type}}
   </option>
@@ -107,39 +143,69 @@
       id="inline-form-custom-select-trainingUnits"
       class="mb-2 mr-sm-2 mb-sm-0"
     
-      :value="null"
+     
       v-model="trainingUnit"
-      
+      required
+      :disabled="isEnabled"
     >
+    <option selected disabled>
+      Bitte Trainingseinheit wählen
+      </option>
     
     <option v-for="trainingCatSelect in trainingCatSelection" :key="trainingCatSelect" :value="trainingCatSelect.id" >
       {{trainingCatSelect.name}}
   </option>
     </b-form-select>
+
+ 
+
 </b-input-group>
 
-    <label class="sr-only" for="inline-form-input-rep">Wiederholungen</label>
+    <label class="sr-only" for="inline-form-input-rep">Wiederholungen
+    
+    </label>
     <b-input-group prepend="Wiederholungen" class="mb-2 mr-sm-2 mb-sm-0">
     <b-form-input
       id="inline-form-input-rep"
       class="mb-2 mr-sm-2 mb-sm-0"
       placeholder="Beispiel 5/5/5/5"
       v-model="reps"
+      required
+      trim
+     
     ></b-form-input>
+    
     </b-input-group>
 
     <label class="sr-only" for="inline-form-input-weight">Gewicht</label>
     <b-input-group prepend="Gewicht" class="mb-2 mr-sm-2 mb-sm-0">
       <b-form-input 
+   
+      required
       id="inline-form-input-weight" 
       placeholder="Beispiel 5/15/25/35"
-      v-model="weight"></b-form-input>
+      trim
+      v-model="weight">
+      
+      </b-form-input>
+
+      
     </b-input-group>
+ 
 
 
-
-    <b-button variant="primary" @click="addTrainingUnit(trainingPlan.id)" >Speichern</b-button>
+    <b-button 
+    
+    variant="primary"  
+    @click="addTrainingUnit(trainingPlan.id),checkAddTrainingUnit()" >
+    Speichern
+    </b-button>
   </b-form>
+  
+  <b-list-group v-if="isError" class="pt-1" >
+  <b-list-group-item variant="danger" v-for="error in errors" :key="error">{{ error }}</b-list-group-item> 
+  </b-list-group>
+  
     </b-col>
    
   </b-collapse>
@@ -204,7 +270,7 @@
    
    
         
-        <b-button v-model="removeUnit" @click="removeUnit(row.item.id,trainingPlan.id)"><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
+        <b-button v-model="removeUnit" variant="dark" @click="removeUnit(row.item.id,trainingPlan.id)"><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
     
   
       </template>
@@ -225,8 +291,14 @@
 
 <script>
 import axios from 'axios'
+
   export default {
-  methods: {
+ 
+ computed:{
+
+
+ },
+ methods: {
     
     async fetchTrainingsPlans(){
 
@@ -237,7 +309,7 @@ this.isBusy = true
   const response = await axios.get('http://localhost:8000/individualTraining/trainingList/'+this.memberID);
   this.isBusy = false
   this.trainingPlans = response.data
-
+ 
 } catch (error) {
   this.isBusy = false
   console.log('failed to load db table')
@@ -250,7 +322,8 @@ async fetchTrainingUnitsbyTPId(value){
 
 
  try {
-
+   
+this.resetTrainingUnitForm()
    this.isDisabled=true
    const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
    this.trainingUnits = response.data
@@ -269,6 +342,9 @@ try {
 const response = await axios.get('http://localhost:8000/individualTraining/getTrainingCats');
 this.trainingUnitsbyCat = response.data
 
+
+
+
 console.table(this.trainingUnitsbyCat)
 } catch (error) {
 console.log('db did not load')  
@@ -282,6 +358,11 @@ try {
 let response = await axios.get('http://localhost:8000/individualTraining/getTrainingCatSelection/'+value);
 
 this.trainingCatSelection = response.data
+
+// check if any Category was selected and enable training Unit selection
+if(this.trainingCat>0)
+  {this.isEnabled=false}
+
 console.table(this.trainingCatSelection) 
 } catch (error) {
   console.log('db did not load')
@@ -312,12 +393,13 @@ this.fetchTrainingsPlans()
 
 },
 
-removeTrainingPlan(value){
-let trainingPlan={'user':value,'name':this.trainingPlanName}
+removeTrainingPlan(RtrainingPlan){
 
-axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
-                 .then((res) => {
-                      console.log(res)
+
+
+axios.post('http://localhost:8000/individualTraining/removeTrainingPlan/'+RtrainingPlan)
+                 .then(() => {
+                    
               
               this.fetchTrainingsPlans()
                  })
@@ -328,7 +410,7 @@ axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
                      
                  });
 
-this.fetchTrainingsPlans()
+
 
   
 
@@ -347,23 +429,25 @@ let arr = {
 console.table(arr)
 var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
  
- await axios.post(addUnitPlanUrl,arr)
-                 .then(() => {
-              
-               this.fetchTrainingUnitsbyTPId(value)
-   
-   this.reps=""
-   this.weight=""
-                 })
-                 .catch((error) => {
-                   console.log(error)
-                 
-                 }).finally(() => {
-                     
-                 });
 
+if(this.trainingUnit && this.reps && this.weight){
+  await axios.post(addUnitPlanUrl,arr)
+                  .then(() => {
+                
+                this.resetTrainingUnitForm()
 
+                this.fetchTrainingUnitsbyTPId(value)
 
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                  
+                  }).finally(() => {
+                      
+                  });
+
+     
+}
 
 
   
@@ -398,8 +482,7 @@ var editUnitPlanUrl= 'http://localhost:8000/individualTraining/updateTrainingUni
                  });
 
 
-this.isDisabled=true
-this.editVisible=true
+
   
 
 },
@@ -430,8 +513,58 @@ try {
 }
 
 
+},
+
+      checkAddTrainingUnit :function(){
+
+      
+
+          this.errors = [];
+
+if (this.trainingCat == 0) {
+         this.errors.push("Trainingskategorie wählen");
+      }
+
+if (this.trainingUnit == 0) {
+         this.errors.push("Trainingseinheit wählen");
+      }
+
+ if (this.reps == undefined || this.weight=="") {
+         this.errors.push("Wiederholungen eingeben");
+      }
+
+      if (this.weight == undefined || this.weight=="") {
+         this.errors.push("Gewicht angeben");
+      }
+      
+   
+
+     
+  if(this.errors.length==0){
+    
+    this.isError=false
+  
+  }else{
+
+    this.isError=true
+  }
+
+    },
+
+    resetTrainingUnitForm:function () {
+
+      this.weight=""
+      this.reps=""
+      this.trainingUnit=""
+      this.trainingCat=""      
+      this.errors=[]
+    },
+
+    onClose() {
+        this.popoverShow = false
+      }
 }
-  },
+  ,
     
   watch: {
 
@@ -439,7 +572,9 @@ try {
          this.fetchTrainingsPlans()
     
   },
-   
+
+  
+ 
   },
     data() {
       return {
@@ -449,7 +584,7 @@ try {
         trainingCatSelection:[],
         trainingPlans:[],
         trainingUnits:[],
-
+     errors: [],
         trainingPlanForm:{
           memberID:null,
           trainingPlanForm:null,
@@ -465,13 +600,16 @@ fields:[
   {key:'id',label:' '},
 ],
 
-trainingUnit:null,
-isDisabled:true,
-  editVisible:false,
-  editSave:true
+trainingUnit:0,
+trainingCat:0,
+isEnabled:true,
+weight:null,
+reps:null,
+ isDisabled:false,
+isError:false,
 
-
-
+ isSet:true,
+  
       
       }
     },
