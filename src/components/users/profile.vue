@@ -63,7 +63,7 @@ import axios from 'axios'
 
     return {
       memberID: null,
-      
+      apiIP:this.$store.state.static.apiIP,
       userProfileData:'http://localhost:8000/userProfiles/profile/',
       profile:[],
       bmi:null,

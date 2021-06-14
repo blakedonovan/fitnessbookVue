@@ -10,6 +10,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router'
 import store from "@/store/index.js"
 
+
+
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
 Vue.use(BootstrapVueIcons);
@@ -22,5 +24,6 @@ IconsPlugin,
   router,
   store,
  VueAxios,
+
   render: h => h(App)
 }).$mount('#app')
