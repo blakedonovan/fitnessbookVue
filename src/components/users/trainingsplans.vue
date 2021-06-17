@@ -270,7 +270,11 @@
    
    
         
-        <b-button v-model="removeUnit" variant="dark" @click="removeUnit(row.item.id,trainingPlan.id)"><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
+        <b-button v-model="removeUnit" variant="dark"
+         @click="removeUnit(row.item.id,trainingPlan.id)">
+         <b-icon icon="trash-fill" aria-hidden="true">
+           </b-icon>
+           </b-button>
     
   
       </template>

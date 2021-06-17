@@ -46,7 +46,9 @@ const routes = [
       { path: '/users/trainingsplans',
         component: () => import('../components/users/trainingsplans.vue') },
       { path: '/users/biometrics',
-        component: () => import('../components/users/biometrics.vue') }
+        component: () => import('../components/users/biometrics.vue') },
+        { path: '/users/nutrition',
+        component: () => import('../components/users/nutrition.vue') }
     ]
   },
   

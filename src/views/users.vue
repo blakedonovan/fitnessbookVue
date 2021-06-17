@@ -43,6 +43,7 @@
 
         <b-nav-item to="/users/profile" exact exact-active-class="active">Profil</b-nav-item>
         <b-nav-item to="/users/trainingsplans" exact exact-active-class="active">Trainingspläne</b-nav-item>
+        <b-nav-item to="/users/nutrition" exact exact-active-class="active">Ernährung</b-nav-item>
         <b-nav-item to="/users/biometrics" exact exact-active-class="active">Biometrie</b-nav-item>
       </b-nav>
     </b-card-header>

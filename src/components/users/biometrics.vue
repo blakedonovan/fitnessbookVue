@@ -2,16 +2,19 @@
 
    <div>
 
-<b-row>
-  <b-col cols="2">
-
+<b-row >
+ <b-col cols="2">
+   <b-calendar variant="info" v-model="value" :min="min" :max="max" locale="de"></b-calendar>
 </b-col>
   <b-col cols="10">
   
-      <apexchart width="700" type="area" :options="options" :series="series"></apexchart>
+      <apexchart width="900" type="area" :options="options" :series="series"></apexchart>
 </b-col>
 </b-row>
-    
+    <b-row>
+
+      
+    </b-row>
    </div>
 </template>
 
@@ -22,13 +25,14 @@ import axios from 'axios'
 
 export default {
 
-  name: 'LineChartContainer',
+  name: 'Gewicht',
 
   data: () => ({
    
     cdata: [],
+    dateRange:[],
     memberID :null,
-datacollection: null,
+
 options: {
 
   xaxis: {
@@ -62,7 +66,11 @@ async fetchBiometrics(){
 
  try {
 const userProgress  = await axios.get('http://localhost:8000/userBiometrics/userProgress/'+this.memberID)
+
       this.cdata = userProgress.data.map(item=>item.Gewicht)
+const date = userProgress.data.map(item=>item.Datum)
+
+console.table(date)
 
  this.series = [{
     data:this.cdata ,
