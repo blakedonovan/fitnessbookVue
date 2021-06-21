@@ -2,8 +2,11 @@
 <template>
  
   <div>
-{{date}}
 
+  <button @click="start">Start</button>
+    <button @click="stop">Stop</button>
+    <button @click="reset">Reset</button>
+    <p>{{elapsedMin}}:{{elapsedSec}}</p>
    <b-card v-for="pf in profile" :key="pf"
     :title="pf.user_name"
    
@@ -67,11 +70,24 @@ import axios from 'axios'
       userProfileData:'http://localhost:8000/userProfiles/profile/',
       profile:[],
       bmi:null,
-      date:null
+      
+     Interval:null,
+     sTime:null,
+     eTime:null,
+     stoppedTime:'',
+     elapsedSec: 0,
+     elapsedMin:0,
+      timer: undefined
      
     }
   },
  computed: {
+    formattedElapsedTime() {
+      const date = new Date(null);
+      date.setSeconds(this.elapsedTime / 1000);
+      const utc = date.toUTCString();
+      return utc.substr(utc.indexOf(":") - 2, 8);
+    }
    
   },
 watch: {
@@ -92,20 +108,51 @@ watch: {
   const response = await axios.get(this.userProfileData+this.memberID)
   this.profile = response.data
   return this.profile
-}
+},
+
+async startWatch(){
+  
+  
+this.sTime = new Date()
+   this.sTime=this.sTime.getTime()
+
+},
+
+
+  start() {
+      this.timer = setInterval(() => {
+        this.elapsedSec += 1;
+        if(this.elapsedSec>59){
+          this.elapsedMin+=1
+          this.elapsedSec==0
+        }
+
+      }, 1000);
+    },
+    stop() {
+      clearInterval(this.timer);
+    },
+    reset() {
+      this.elapsedTime = 0;
+    }
   }
-,
+
+ 
+
+
+
+
+  ,
 mounted(){
 
    this.fetchProfile()
-   this.date= Date();
-}
+  
     
    
   
 
   }
-
+  }
  
 </script>
 

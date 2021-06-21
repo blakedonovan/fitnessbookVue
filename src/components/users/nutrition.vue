@@ -1,6 +1,11 @@
 <template>
   <div>
-    {{title}}
+    <b-container>
+<b-row>
+
+
+</b-row>
+    </b-container>
     </div>
 </template>
 

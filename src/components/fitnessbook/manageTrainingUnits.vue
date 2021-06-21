@@ -5,7 +5,7 @@
     <b-row>
       <b-col cols="1">
 
-
+ 
         </b-col>
 <b-col cols="11">
 
@@ -40,7 +40,7 @@
    >
    
   
-  <b-form >
+  <b-form enctype="multipart/form-data">
   
 <b-form-group>
     <label class="sr-only" for="inline-form-input-trainingUnitName">Trainingseinheit Bezeichnung</label>
@@ -69,14 +69,11 @@
 
 
   
-    <b-form-file id="file-upload" 
-    size="sm"
-     placeholder="Bild oder Video auswählen"
-     class="mt-2"
-     v-model="mediaUpload"
-      ></b-form-file>
-
+ <input type="file" @change="onFileChange" >
+  
  </b-form-group>
+
+ 
     <b-button 
     variant="outline-primary"
     @click="addUnit(trainingCategory.id)"
@@ -200,7 +197,8 @@ export default {
    
           unitName: '',
           unitDescription: '',
-          mediaUpload:null,
+          mediaUpload:'',
+          mediaFileName:'',
           
          
         
@@ -209,7 +207,9 @@ export default {
   
   {key:'name',label:'Name'},
 
-  {key:'description',label:'Beschreibung',tdClass: 'widthEl'},
+  {key:'description',label:'Beschreibung'},
+  {key:'description_pic',label:'Bild'},
+  
   {key:'id',label:' '},
 ],
    
@@ -252,9 +252,8 @@ async saveUnitEdit(catID,unitID,unitName,unitDescription){
 
 var editUnitUrl= 'http://localhost:8000/manageTrainingUnits/updateUnit/'+unitID+'?name='+unitName+'&description='+unitDescription;
  console.log(editUnitUrl)
- await axios.put(editUnitUrl)
-
-                 .then((res) => {
+ 
+ await axios.put(editUnitUrl).then((res) => {
               console.table(res.data)
             
               this.fetchTrainingUnitsByCatID(catID)
@@ -274,33 +273,65 @@ var editUnitUrl= 'http://localhost:8000/manageTrainingUnits/updateUnit/'+unitID+
 
 },
 
+async onFileChange(e){
+
+  var addUnitUrl= 'http://localhost:8000/manageTrainingUnits/uploadFile/';
+
+  var files = e.target.files || e.dataTransfer.files;
+
+      if (!files.length)
+        return;
+
+       this.mediaUpload=files[0]
+ this.mediaFileName=files[0].name
+
+const upfile = new FormData();
+
+upfile.append('mediaUpload',this.mediaUpload)
+
+
+    await axios.post(addUnitUrl,upfile,{headers: { 'Content-Type': 'multipart/form-data'}})
+ .then((res) => {
+              
+            this.mediaFileName=res.data
+            // console.log(this.mediaFileName)
+   
+                 })
+                 .catch((error) => {
+                   console.log(error)
+                 
+                 }).finally(() => {
+                     
+                 });
+
+  },
+   
+     
 
 async addUnit(catID){
-  
-let unitAddition = {
 
-'name' : this.unitName,
-'description' : this.unitDescription,
-'mediaUpload': this.mediaUpload,
-'unitCat' : catID
+const addUnit = new FormData();
 
-
-}
-console.table(unitAddition)
+addUnit.append('name' , this.unitName)
+addUnit.append('description' , this.unitDescription)
+addUnit.append('mediaFilename',this.mediaFileName)
+addUnit.append('unitCat' , catID)
 
 
+//console.log(this.mediaFileName)
+console.table(addUnit)
 
 var addUnitUrl= 'http://localhost:8000/manageTrainingUnits/addUnit/';
- console.log(addUnitUrl)
- await axios.post(addUnitUrl,unitAddition)
-
-                 .then((res) => {
-              console.table(res.data)
-            
+ 
+ await axios.post(addUnitUrl,addUnit )
+ .then((res) => {
+              console.log(res.data)
+        
               this.fetchTrainingUnitsByCatID(catID)
               this.unitName= '',
               this.unitDescription= '',
-              this.mediaUpload=null;
+              this.mediaUpload='',
+              this.mediaFileName=''
    
    
                  })
