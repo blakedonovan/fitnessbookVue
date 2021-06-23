@@ -310,7 +310,7 @@ try {
   
 this.isBusy = true
   this.memberID = this.$store.state.selection.memberSelection
-  const response = await axios.get('http://localhost:8000/individualTraining/trainingList/'+this.memberID);
+  const response = await axios.get('http://localhost:8001/api/trainingList/'+this.memberID);
   this.isBusy = false
   this.trainingPlans = response.data
  
@@ -329,7 +329,7 @@ async fetchTrainingUnitsbyTPId(value){
    
 this.resetTrainingUnitForm()
    this.isDisabled=true
-   const response = await axios.get('http://localhost:8000/individualTraining/trainingUnitsbyListID/'+value);
+   const response = await axios.get('http://localhost:8001/api/trainingUnitsbyListID/'+value);
    this.trainingUnits = response.data
    console.table(this.trainingUnits)
  
@@ -343,7 +343,7 @@ async getTrainingUnitsByCat(){
 
 try {
 
-const response = await axios.get('http://localhost:8000/individualTraining/getTrainingCats');
+const response = await axios.get('http://localhost:8001/api/getTrainingCats');
 this.trainingUnitsbyCat = response.data
 
 
@@ -359,7 +359,7 @@ async getTrainingCategorySelection(value){
 
 try {
 
-let response = await axios.get('http://localhost:8000/individualTraining/getTrainingCatSelection/'+value);
+let response = await axios.get('http://localhost:8001/api/getTrainingCatSelection/'+value);
 
 this.trainingCatSelection = response.data
 
@@ -378,7 +378,7 @@ console.table(this.trainingCatSelection)
 addTrainingPlan(value){
 let trainingPlan={'user':value,'name':this.trainingPlanName}
 
-axios.post('http://localhost:8000/individualTraining/addPlan/', trainingPlan)
+axios.post('http://localhost:8001/api/addPlan/', trainingPlan)
                  .then((res) => {
                       console.log(res)
               
@@ -401,7 +401,7 @@ removeTrainingPlan(RtrainingPlan){
 
 
 
-axios.post('http://localhost:8000/individualTraining/removeTrainingPlan/'+RtrainingPlan)
+axios.post('http://localhost:8001/api/removeTrainingPlan/'+RtrainingPlan)
                  .then(() => {
                     
               
@@ -431,7 +431,7 @@ let arr = {
   }
 
 console.table(arr)
-var addUnitPlanUrl= 'http://localhost:8000/individualTraining/addTrainingUnit/';
+var addUnitPlanUrl= 'http://localhost:8001/api/addTrainingUnit/';
  
 
 if(this.trainingUnit && this.reps && this.weight){
@@ -467,7 +467,7 @@ async saveUnitEdit(tpid,edit,reps,weight){
 
 
 
-var editUnitPlanUrl= 'http://localhost:8000/individualTraining/updateTrainingUnit/'+edit+'?reps='+reps+'&weight='+weight;
+var editUnitPlanUrl= 'http://localhost:8001/api/updateTrainingUnit/'+edit+'?reps='+reps+'&weight='+weight;
  
  await axios.put(editUnitPlanUrl)
 
@@ -497,7 +497,7 @@ async removeUnit(remove,tpid){
 try {
 
 
- await axios.post('http://localhost:8000/individualTraining/removeTrainingUnit/'+remove)
+ await axios.post('http://localhost:8001/api/removeTrainingUnit/'+remove)
                  .then((res) => {
                       console.log(res)
 
