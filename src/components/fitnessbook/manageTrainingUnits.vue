@@ -220,7 +220,7 @@ export default {
 
   async  fetchTrainingCategories(){
 
-      const response = await axios.get('http://localhost:8001/api/getTrainingCats');
+      const response = await axios.get('http://localhost:8000/api/getTrainingCats');
 this.trainingCategories = response.data
 console.table(this.trainingCategories)
     },
@@ -228,7 +228,7 @@ console.table(this.trainingCategories)
     async  fetchTrainingUnitsByCatID(value){
 try {
 
-let trainingUnits = await axios.get('http://localhost:8001/api/getTrainingCatSelection/'+value);
+let trainingUnits = await axios.get('http://localhost:8000/api/getTrainingCatSelection/'+value);
 
 this.trainingUnits = trainingUnits.data
 
@@ -242,7 +242,7 @@ console.table(this.trainingUnits)
 
       async  fetchTrainingUnitDetails(value){
 
-          var trainingUnitDetail = await axios.get('http://localhost:8001/api/getTrainingCatSelection/'+value);
+          var trainingUnitDetail = await axios.get('http://localhost:8000/api/getTrainingCatSelection/'+value);
           this.trainingUnitDetails = trainingUnitDetail.data
   },
 
@@ -250,7 +250,7 @@ async saveUnitEdit(catID,unitID,unitName,unitDescription){
 
 
 
-var editUnitUrl= 'http://localhost:8001/api/updateUnit/'+unitID+'?name='+unitName+'&description='+unitDescription;
+var editUnitUrl= 'http://localhost:8000/api/updateUnit/'+unitID+'?name='+unitName+'&description='+unitDescription;
  console.log(editUnitUrl)
  
  await axios.put(editUnitUrl).then((res) => {
@@ -275,7 +275,7 @@ var editUnitUrl= 'http://localhost:8001/api/updateUnit/'+unitID+'?name='+unitNam
 
 async onFileChange(e){
 
-  var addUnitUrl= 'http://localhost:8001/api/uploadFile/';
+  var addUnitUrl= 'http://localhost:8000/api/uploadFile/';
 
   var files = e.target.files || e.dataTransfer.files;
 
@@ -321,7 +321,7 @@ addUnit.append('unitCat' , catID)
 //console.log(this.mediaFileName)
 console.table(addUnit)
 
-var addUnitUrl= 'http://localhost:8001/api/addUnit/';
+var addUnitUrl= 'http://localhost:8000/api/addUnit/';
  
  await axios.post(addUnitUrl,addUnit )
  .then((res) => {
@@ -354,7 +354,7 @@ async removeUnit(remove,category){
 try {
 
 
- await axios.post('http://localhost:8001/api/removeUnit/'+remove)
+ await axios.post('http://localhost:8000/api/removeUnit/'+remove)
                  .then((res) => {
                       console.log(res)
 

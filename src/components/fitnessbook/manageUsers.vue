@@ -53,7 +53,7 @@ this.getUserList()
   methods: {
 
   async  getUserList(){
-var getUsers= 'http://localhost:8001/api/profileList';
+var getUsers= 'http://localhost:8000/api/profileList';
       
       await axios.get(getUsers)
 
