@@ -65,7 +65,7 @@ methods:{
 async fetchBiometrics(){
 
  try {
-const userProgress  = await axios.get('http://localhost:8000/userBiometrics/userProgress/'+this.memberID)
+const userProgress  = await axios.get('http://localhost:8001/api/userProgress/'+this.memberID)
 
       this.cdata = userProgress.data.map(item=>item.Gewicht)
 const date = userProgress.data.map(item=>item.Datum)

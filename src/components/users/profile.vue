@@ -2,14 +2,14 @@
 <template>
  
   <div>
-
+ 
   <button @click="start">Start</button>
     <button @click="stop">Stop</button>
     <button @click="reset">Reset</button>
     <p>{{elapsedMin}}:{{elapsedSec}}</p>
    <b-card v-for="pf in profile" :key="pf"
     :title="pf.user_name"
-   
+  
   
     style="max-width: 20rem;"
     class="mb-2"
@@ -67,7 +67,7 @@ import axios from 'axios'
     return {
       memberID: null,
       apiIP:this.$store.state.static.apiIP,
-      userProfileData:'http://localhost:8000/userProfiles/profile/',
+      userProfileData:'http://localhost:8001/api/profile/',
       profile:[],
       bmi:null,
       
@@ -77,7 +77,8 @@ import axios from 'axios'
      stoppedTime:'',
      elapsedSec: 0,
      elapsedMin:0,
-      timer: undefined
+      timer: undefined,
+
      
     }
   },
@@ -109,7 +110,7 @@ watch: {
   this.profile = response.data
   return this.profile
 },
-
+  
 async startWatch(){
   
   
@@ -147,7 +148,7 @@ mounted(){
 
    this.fetchProfile()
   
-    
+   
    
   
 
