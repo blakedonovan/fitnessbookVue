@@ -264,7 +264,18 @@
           </b-button>
     
   </b-button-group >
+
       </template>
+<template v-slot:cell(description_pic)="row">
+<b-img 
+ width="350" height="250" 
+ alt="kein bild" 
+ :src="`${ImageUrl}${row.item.description_pic}`" 
+ lazy>
+
+</b-img>
+
+</template>
 
 <template v-slot:cell(id)="row">
    
@@ -601,6 +612,7 @@ fields:[
   {key:'reps',label:'Wiederholungen',tdClass: 'widthEl'},
   {key:'weight',label:'Gewicht',tdClass: 'widthEl'},
   {key:'description',label:'Beschreibung',tdClass: 'widthEl'},
+  {key:'description_pic',label:'Bild',tdClass: 'widthEl'},
   {key:'id',label:' '},
 ],
 
@@ -613,7 +625,7 @@ reps:null,
 isError:false,
 
  isSet:true,
-  
+  ImageUrl:'http://192.168.178.65:8000/storage/TrainingUnits/'
       
       }
     },
