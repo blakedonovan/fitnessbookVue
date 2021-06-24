@@ -75,7 +75,7 @@ import axios from 'axios'
       return {
      
 
-      profileList:'http://localhost:8000/api/profileList',
+      profileList:'http://192.168.178.65:8000/api/profileList',
       memberList:[],  
       
       }

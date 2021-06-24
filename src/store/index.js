@@ -13,7 +13,7 @@ selection: {
       },
 static:{
 
-  apiIP:'http://localhost:8000'
+  apiIP:'http://192.168.178.65:8000'
 }
      
  

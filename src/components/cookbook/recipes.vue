@@ -131,13 +131,13 @@ async mounted(){
       try{
 
 
-      const recipeCat= await axios.get('http://localhost:8000/api/recipeCategories')
+      const recipeCat= await axios.get('http://192.168.178.65:8000/api/recipeCategories')
       this.recipeCategories = recipeCat.data
       console.log(this.recipeCategories)
 
 
 
-      const recipes = await axios.get('http://localhost:8000/api/recipes')
+      const recipes = await axios.get('http://192.168.178.65:8000/api/recipes')
       this.recipes = recipes.data
 
       
@@ -163,7 +163,7 @@ async mounted(){
 
        async getRecipesById(){
           
-          this.filteredRecipes = await axios.get('http://localhost:8000/api/recipeId/'+this.catSelection)
+          this.filteredRecipes = await axios.get('http://192.168.178.65:8000/api/recipeId/'+this.catSelection)
           this.recipes = this.filteredRecipes.data
         
           console.log(this.filteredRecipes.data)

@@ -101,6 +101,14 @@
  sticky-header
  lazy
     >
+
+<template v-slot:cell(description_pic)="row">
+<b-img width="350" height="250" alt="kein bild" :src="`${ImageUrl}${row.item.description_pic}`" >
+
+</b-img>
+</template>
+    
+
      <template v-slot:cell(name)="row">
    
    
@@ -167,7 +175,7 @@
   </b-popover>
       </template>
 
-  
+    
     </b-table>
 
 
@@ -199,7 +207,7 @@ export default {
           unitDescription: '',
           mediaUpload:'',
           mediaFileName:'',
-          
+          ImageUrl:'http://localhost:8000/storage/TrainingUnits/',
          
         
 
