@@ -83,7 +83,7 @@ async mounted(){
         try{
         this.recipeId = this.$route.params.recipeId;
 
-         this.RecipeDetailFetch = await axios.get('http://localhost:8000/recipes/recipeDetail/'+this.recipeId)
+         this.RecipeDetailFetch = await axios.get('http://192.168.178.65:8000/recipes/recipeDetail/'+this.recipeId)
           this.RecipeDetails = this.RecipeDetailFetch.data
           this.ingredients =this.RecipeDetailFetch.data
           console.log(this.RecipeDetails)

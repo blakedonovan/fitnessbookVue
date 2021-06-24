@@ -1,78 +1,121 @@
 <template>
-  <div>
- 
 
-{{memberID}}
-<b-list-group>
+   <div>
 
-  <b-list-group-item v-for="pf in profile" v-bind:key="pf.id">{{pf.user_name}}</b-list-group-item>
+<b-row >
+ <b-col cols="2">
+   <b-calendar variant="info" v-model="value" :min="min" :max="max" locale="de"></b-calendar>
+</b-col>
+  <b-col cols="10">
+  
+      <apexchart width="900" type="area" :options="options" :series="series"></apexchart>
+</b-col>
+</b-row>
+    <b-row>
 
-</b-list-group>
-
-  </div>
+      
+    </b-row>
+   </div>
 </template>
+
 <script>
+
 import axios from 'axios'
-//import { mapState } from 'vuex';
+
 
 export default {
-  
-  created () {
-      
-  },
-  methods: {
 
-  },
-  watch: {
+  name: 'Gewicht',
 
-    '$store.state.selection.memberSelection': function() {
-      this.memberID= this.$store.state.selection.memberSelection
-      this.profile=axios.get('http://localhost:8000/userProfiles/profile/'+this.$store.state.selection.memberSelection)
-    console.log('biometrics '+this.$store.state.selection.memberSelection )
-    console.log(this.profile)
-  }
-    
-  },
-  name: 'biometrics',
+  data: () => ({
+   
+    cdata: [],
+    dateRange:[],
+    memberID :null,
 
-  computed: {
+options: {
 
-    
-  },
-
-
-  mounted () {
-   this.memberID = this.$store.state.selection.memberSelection
- 
+  xaxis: {
+            categories: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August']
+          },
+          stroke: {
+  curve: 'smooth',
 },
-  data() {
-      return {
-  
-profile:[],
-       memberID:null,
-   
-      }
-    },
-   
+
+
+},
+      series: [],
+
+
+    
+      
+  }),
+
+
+ async mounted () {
+
+  this.fetchProfile()
+  this.fillData();
+   this.fetchBiometrics()
+  }
+,
+methods:{
+
+
+async fetchBiometrics(){
+
+ try {
+const userProgress  = await axios.get('http://192.168.178.65:8000/api/userProgress/'+this.memberID)
+
+      this.cdata = userProgress.data.map(item=>item.Gewicht)
+const date = userProgress.data.map(item=>item.Datum)
+
+console.table(date)
+
+ this.series = [{
+    data:this.cdata ,
+   name:'Gewicht in kg'
+   }]
+
+
+     
+      
+    } catch (e) {
+      console.error(e)
+    }
+
+},
+ async fetchProfile(){
+
+  this.memberID = this.$store.state.selection.memberSelection
+  const response = await axios.get(this.userProfileData+this.memberID)
+  this.profile = response.data
+  return this.profile
+},
+
+
+
+async fillData(){
 
 }
 
 
+
+},
+
+watch: {
+
+     '$store.state.selection.memberSelection': function() {
+         this.fetchProfile()
+          this.fetchBiometrics()
+         this.fillData()
+    
+    
+  }
+  }
+
+ 
+
+
+}
 </script>
-
-
-
-<style scoped>
-li{
-    height: 40px;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid saddlebrown;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }  
-a {
-  color: #42b983;
-}
-</style>

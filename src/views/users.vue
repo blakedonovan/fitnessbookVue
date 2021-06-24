@@ -43,6 +43,7 @@
 
         <b-nav-item to="/users/profile" exact exact-active-class="active">Profil</b-nav-item>
         <b-nav-item to="/users/trainingsplans" exact exact-active-class="active">Trainingspläne</b-nav-item>
+        <b-nav-item to="/users/nutrition" exact exact-active-class="active">Ernährung</b-nav-item>
         <b-nav-item to="/users/biometrics" exact exact-active-class="active">Biometrie</b-nav-item>
       </b-nav>
     </b-card-header>
@@ -74,7 +75,7 @@ import axios from 'axios'
       return {
      
 
-      profileList:'http://localhost:8000/userProfiles/profileList',
+      profileList:'http://192.168.178.65:8000/api/profileList',
       memberList:[],  
       
       }
@@ -114,6 +115,7 @@ import axios from 'axios'
    
       },
     methods: {
+   
    changeMember:function(){
    
      this.$store.commit("selectMember", this.memberSelection)

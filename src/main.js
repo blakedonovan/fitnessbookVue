@@ -10,6 +10,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from './router'
 import store from "@/store/index.js"
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+
+Vue.component('apexchart', VueApexCharts)
+
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false
 Vue.use(BootstrapVueIcons);
@@ -22,5 +27,7 @@ IconsPlugin,
   router,
   store,
  VueAxios,
+ VueApexCharts,
+
   render: h => h(App)
 }).$mount('#app')

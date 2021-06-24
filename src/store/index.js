@@ -11,7 +11,10 @@ export default new Vuex.Store({
 selection: {
         memberSelection:null
       },
+static:{
 
+  apiIP:'http://192.168.178.65:8000'
+}
      
  
 },
@@ -19,7 +22,7 @@ selection: {
  getters: {
 
     memberSelection: state => state.selection.memberSelection,
-
+    apiIP: state => state.static.apiIP,
 
     
  },

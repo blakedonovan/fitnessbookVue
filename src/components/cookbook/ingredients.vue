@@ -166,7 +166,7 @@ computed:{
       try{
 
 
-      const response = await axios.get('http://localhost:8000/cookbook/ingredient')
+      const response = await axios.get('http://192.168.178.65:8000/api/ingredient')
       this.ingridients = response.data
       
 
@@ -190,7 +190,7 @@ computed:{
 
 if(this.form.Zutat && this.form.Fett && this.form.Kohlenhydrate && this.form.Protein && this.form.kcal && this.form.kcal){
 
-axios.post('http://localhost:8000/cookbook/ingredient', this.form)
+axios.post('http://192.168.178.65:8000/api/ingredient', this.form)
                  .then((res) => {
 
                    this.ingridients = res.data;
